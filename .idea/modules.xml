@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/JAVA.iml" filepath="$PROJECT_DIR$/.idea/JAVA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/_01_Introduccion/_01_Introduccion.iml" filepath="$PROJECT_DIR$/_01_Introduccion/_01_Introduccion.iml" />
+      <module fileurl="file://$PROJECT_DIR$/_02_bucles/_02_bucles.iml" filepath="$PROJECT_DIR$/_02_bucles/_02_bucles.iml" />
+      <module fileurl="file://$PROJECT_DIR$/_03_arrays_listas/_03_arrays_listas.iml" filepath="$PROJECT_DIR$/_03_arrays_listas/_03_arrays_listas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/_04_POO/_04_POO.iml" filepath="$PROJECT_DIR$/_04_POO/_04_POO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/_05_Inventario_POO/_05_Inventario_POO.iml" filepath="$PROJECT_DIR$/_05_Inventario_POO/_05_Inventario_POO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/_06_Gestion_cursos/_06_Gestion_cursos.iml" filepath="$PROJECT_DIR$/_06_Gestion_cursos/_06_Gestion_cursos.iml" />
+    </modules>
+  </component>
+</project>
