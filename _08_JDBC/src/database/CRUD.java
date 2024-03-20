@@ -17,4 +17,5 @@ public interface CRUD {
 
     public Object findById(int id);
 
+    List<Object> findByName(String name);
 }

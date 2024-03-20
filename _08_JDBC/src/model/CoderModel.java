@@ -66,7 +66,43 @@ public class CoderModel implements CRUD {
 
     @Override
     public boolean delete(Object object) {
-        return false;
+        //1. Convertir el objeto a la entidad
+        Coder objCoder = (Coder) object;
+
+        //2. Variable booleana para medir el estado de la eliminación
+        boolean isDeleted = false;
+
+        //3. Abrir la conexión
+        Connection objConnection = ConfigDB.openConnection();
+
+        try {
+            //4. Escribir la sentencia SQL
+            String sql = "DELETE FROM coder WHERE  id = ?;";
+
+            //5. Preparamos el statement
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            //6. Asignamos el valor al ?
+            objPrepare.setInt(1, objCoder.getId());
+
+            //7. ExecuteUpdate devuelve la cantidad filas afectadas por la sentencia SQL ejecutada.
+
+            int totalAffectedRows = objPrepare.executeUpdate();
+
+            if (totalAffectedRows>0){
+                isDeleted = true;
+                JOptionPane.showMessageDialog(null, "The delete was successful.");
+            }
+
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        //8. Cerrar la conexión
+        ConfigDB.closeConnection();
+
+        return isDeleted;
     }
 
     @Override
@@ -118,6 +154,85 @@ public class CoderModel implements CRUD {
 
     @Override
     public Object findById(int id) {
-        return null;
+        // 1. Abrir la conexión
+        Connection objConnection = ConfigDB.openConnection();
+        Coder objCoder = null;
+
+        try{
+            //2. Sentencia SQL
+            String sql = "SELECT * FROM coder WHERE id = ?;";
+
+            //3. Preparar el statement
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            //4. Damos el valor ?
+            objPrepare.setInt(1, id);
+
+            //5. Ejecutamos el query
+            ResultSet objResult = objPrepare.executeQuery();
+
+            //6. Mientras haya un registro siguiente entonces
+            while(objResult.next()){
+                objCoder = new Coder();
+                objCoder.setId(objResult.getInt("id"));
+                objCoder.setName(objResult.getString("name"));
+                objCoder.setClan(objResult.getString("clan"));
+                objCoder.setAge(objResult.getInt("age"));
+            }
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        //7. Cerrar la conexión
+        ConfigDB.closeConnection();
+
+        return objCoder;
     }
+
+    @Override
+    public List<Object> findByName(String name){
+
+        //1. Abrimos la conexión
+        Connection objConnection = ConfigDB.openConnection();
+
+        // 2. Inicializar la lista donde se guardarán los registros que devuelve la base de datos
+        List<Object> listCoders = new ArrayList<>();
+
+        try{
+            // 3. Escribir la sentencia SQL
+            String sql = "SELECT * FROM coder WHERE name LIKE '%" + name +"%';";
+
+            // 4. Utilizar PrepareStatement
+            PreparedStatement objPrepareStatement = (PreparedStatement) objConnection.prepareStatement(sql);
+
+            // 5. Ejecutar el Query o Prepare
+            ResultSet objResult = (ResultSet) objPrepareStatement.executeQuery();
+
+            //6. Obtener los resultados
+            while(objResult.next()){
+
+                // Creamos una instancia de coder
+                Coder objCoder = new Coder();
+
+                // Llenamos nuestro objeto con lo que devuelve la base de datos (ResultSet)
+                objCoder.setId(objResult.getInt("id"));
+                objCoder.setName(objResult.getString("name"));
+                objCoder.setAge(objResult.getInt("age"));
+                objCoder.setClan(objResult.getString("clan"));
+
+                // Finalmente agregamos el coder a la lista
+                listCoders.add(objCoder);
+
+            }
+
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        // 7. Cerramos la conexión
+        ConfigDB.closeConnection();
+        return listCoders;
+    }
+
 }
