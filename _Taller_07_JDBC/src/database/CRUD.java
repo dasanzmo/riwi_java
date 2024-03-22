@@ -13,5 +13,5 @@ public interface CRUD {
 
     public Object findById(int id);
 
-    List<Object> findBookByAuthor(String name);
+    List<Object> findBookByAuthor(int id);
 }

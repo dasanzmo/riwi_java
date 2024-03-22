@@ -9,19 +9,25 @@ public class Book {
     private Date date_publish;
     private double price;
     private int id_author;
-
-    private String name_author;
+    private Author objAuthor;
 
     public Book() {
     }
 
-    public Book(int id_book, String title, Date date_publish, double price, int id_author, String name_author) {
+    public Book(int id_book, String title, Date date_publish, double price, int id_author) {
         this.id_book = id_book;
         this.title = title;
         this.date_publish = date_publish;
         this.price = price;
         this.id_author = id_author;
-        this.name_author = name_author;
+    }
+
+    public Author getObjAuthor() {
+        return objAuthor;
+    }
+
+    public void setObjAuthor(Author objAuthor) {
+        this.objAuthor = objAuthor;
     }
 
     public int getId_book() {
@@ -64,23 +70,15 @@ public class Book {
         this.id_author = id_author;
     }
 
-    public String getName_author() {
-        return name_author;
-    }
-
-    public void setName_author(String name_author) {
-        this.name_author = name_author;
-    }
-
     @Override
     public String toString() {
-        return "Book{" +
-                "id_book=" + id_book +
-                ", title='" + title + '\'' +
-                ", date_publish=" + date_publish +
-                ", price=" + price +
-                ", id_author=" + id_author +
-                ", name_author=" + name_author +
-                '}';
+        return "\n-----------------------" +
+                "\n" + this.getTitle().toUpperCase() + "\n" +
+                "id book: " + id_book + "\n" +
+                "date publish: " + date_publish + "\n" +
+                "price: " + price + "\n" +
+                "id author: " + id_author + "\n" +
+                "author: " + objAuthor.getName() + "\n" +
+                "-----------------------";
     }
 }

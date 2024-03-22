@@ -88,6 +88,12 @@ public class Main {
                         }
                     } while (!optionB.equals("5"));
                     break;
+
+                // Books by Author
+                case "3":
+                    objBookController.BooksByAuthor();
+                    break;
+
             }
 
         } while (!option.equals("4"));

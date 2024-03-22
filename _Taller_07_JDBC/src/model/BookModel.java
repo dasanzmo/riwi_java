@@ -16,6 +16,8 @@ import java.util.List;
 
 public class BookModel implements CRUD {
 
+    Author objAuthor = new Author();
+
     @Override
     public List<Object> findAll() {
 
@@ -25,7 +27,7 @@ public class BookModel implements CRUD {
 
         try {
 
-            String sql = "SELECT books.*, authors.name AS 'author' FROM books INNER JOIN authors ON books.id_author = authors.id_author ORDER BY books.id_book ASC ";
+            String sql = "SELECT * FROM books INNER JOIN authors ON books.id_author = authors.id_author ORDER BY books.id_book ASC ";
 
             PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
@@ -35,19 +37,24 @@ public class BookModel implements CRUD {
 
                 Book objBook = new Book();
 
-                objBook.setId_book(objResult.getInt("id_book"));
-                objBook.setTitle(objResult.getString("title"));
-                objBook.setDate_publish(objResult.getDate("date_pub"));
-                objBook.setPrice(objResult.getDouble("price"));
-                objBook.setId_author(objResult.getInt("id_author"));
-                objBook.setName_author(objResult.getString("author"));
+                objBook.setId_book(objResult.getInt("books.id_book"));
+                objBook.setTitle(objResult.getString("books.title"));
+                objBook.setDate_publish(objResult.getDate("books.date_pub"));
+                objBook.setPrice(objResult.getDouble("books.price"));
+                objBook.setId_author(objResult.getInt("books.id_author"));
+                objAuthor.setId_autor(objResult.getInt("authors.id_author"));
+                objAuthor.setName(objResult.getString("authors.name"));
+                objAuthor.setNacionality(objResult.getString("authors.nacionality"));
+
+                //Agrego el objeto Author al objeto Libro
+                objBook.setObjAuthor(objAuthor);
 
                 listBooks.add(objBook);
 
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data acquisition error");
+            JOptionPane.showMessageDialog(null, "Data acquisition error" + e.getMessage());
         }
         return listBooks;
     }
@@ -165,7 +172,7 @@ public class BookModel implements CRUD {
         Book objBook = null;
 
         try {
-            String sql = "SELECT books.*, authors.name AS 'author' FROM books INNER JOIN authors ON books.id_author = authors.id_author WHERE id_book = ?;";
+            String sql = "SELECT * FROM books INNER JOIN authors ON books.id_author = authors.id_author WHERE id_book = ?;";
 
             PreparedStatement objPrepare = objConnection.prepareStatement(sql);
 
@@ -180,7 +187,12 @@ public class BookModel implements CRUD {
                 objBook.setDate_publish(objResult.getDate("date_pub"));
                 objBook.setPrice(objResult.getDouble("price"));
                 objBook.setId_author(objResult.getInt("id_author"));
-                objBook.setName_author(objResult.getString("author"));
+                objAuthor.setId_autor(objResult.getInt("authors.id_author"));
+                objAuthor.setName(objResult.getString("authors.name"));
+                objAuthor.setNacionality(objResult.getString("authors.nacionality"));
+
+                //Agrego el autor a libros
+                objBook.setObjAuthor(objAuthor);
             }
 
         } catch (Exception e) {
@@ -193,7 +205,46 @@ public class BookModel implements CRUD {
     }
 
     @Override
-    public List<Object> findBookByAuthor(String name) {
-        return null;
+    public List<Object> findBookByAuthor(int id) {
+        Connection objConnection = ConfigDB.openConnection();
+
+        List<Object> listBooksByAuthor = new ArrayList<>();
+
+        try {
+
+            String sql = "SELECT * FROM books INNER JOIN authors ON books.id_author = authors.id_author WHERE authors.id_author = ? ORDER BY books.id_book ASC ";
+
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            objPrepare.setInt(1, id);
+
+            ResultSet objResult = (ResultSet) objPrepare.executeQuery();
+
+            while (objResult.next()) {
+
+                Book objBook = new Book();
+
+                objBook.setId_book(objResult.getInt("books.id_book"));
+                objBook.setTitle(objResult.getString("books.title"));
+                objBook.setDate_publish(objResult.getDate("books.date_pub"));
+                objBook.setPrice(objResult.getDouble("books.price"));
+                objBook.setId_author(objResult.getInt("books.id_author"));
+                objAuthor.setId_autor(objResult.getInt("authors.id_author"));
+                objAuthor.setName(objResult.getString("authors.name"));
+                objAuthor.setNacionality(objResult.getString("authors.nacionality"));
+
+                //Agrego el objeto Author al objeto Libro
+                objBook.setObjAuthor(objAuthor);
+
+                listBooksByAuthor.add(objBook);
+
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Data acquisition error" + e.getMessage());
+        }
+
+        ConfigDB.closeConnection();
+        return listBooksByAuthor;
     }
 }

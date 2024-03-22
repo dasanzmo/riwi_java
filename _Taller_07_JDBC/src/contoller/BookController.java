@@ -121,4 +121,47 @@ public class BookController {
         }
     }
 
+    public void BooksByAuthor(){
+
+        String list;
+
+        // LLamo la lista de autores para mostrar al usuario el Id del autor que quiere relacionar con el libro
+
+        String listAuthors = objAuthorController.getAll(this.objAuthorModel.findAll());
+        int id_author = Integer.parseInt(JOptionPane.showInputDialog(null,listAuthors + "\n Insert the author ID to show books"));
+
+        // Verificamos si el ID del autor existe
+        Author objAuthor = (Author) this.objAuthorModel.findById(id_author);
+
+        list = "Books of Author: " + objAuthor.getName() + "\n";
+
+        // Valido si el autor existe
+        if (objAuthor == null){
+            JOptionPane.showMessageDialog(null,"Author not found");
+        }
+        else{
+            // Valido si la lista de libros del autor está vacía
+            if (objBookModel.findBookByAuthor(id_author).isEmpty()) {
+                list += "No Books found";
+            } else {
+
+                // Iteramos sobre la lista que devuelve el método find All
+                for (Object obj : this.objBookModel.findBookByAuthor(id_author)) {
+
+                    // Convertimos o casteamos el objeto tipo Objetct a un libro
+                    Book objBook = (Book) obj;
+
+                    // Concatenamos la información
+                    list += objBook.toString() + "\n";
+
+                }
+
+            }
+
+            // Mostramos toda la lista
+            JOptionPane.showMessageDialog(null, list);
+        }
+
+    }
+
 }

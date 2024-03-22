@@ -180,7 +180,7 @@ public class AuthorModel implements CRUD {
     }
 
     @Override
-    public List<Object> findBookByAuthor(String name) {
+    public List<Object> findBookByAuthor(int id) {
         return null;
     }
 }

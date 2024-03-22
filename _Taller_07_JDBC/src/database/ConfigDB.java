@@ -16,9 +16,10 @@ public class ConfigDB {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             // Variables con nuestras crendenciales de la base de datos
-            String url = "jdbc:mysql://localhost:3306/library";
-            String user = "root";
-            String password = "";
+            //String url = "jdbc:mysql://localhost:3306/library";
+            String url = "jdbc:mysql://uipuhnfcji7ig9f6:chk7RHTZTiar2sdAjR4L@brqkoaglxajvoe6gnys6-mysql.services.clever-cloud.com:3306/brqkoaglxajvoe6gnys6";
+            String user = "uipuhnfcji7ig9f6";
+            String password = "chk7RHTZTiar2sdAjR4L";
 
             //Establezco conexión
             objConnection = (Connection) DriverManager.getConnection(url, user, password);
