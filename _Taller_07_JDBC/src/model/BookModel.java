@@ -16,8 +16,6 @@ import java.util.List;
 
 public class BookModel implements CRUD {
 
-    Author objAuthor = new Author();
-
     @Override
     public List<Object> findAll() {
 
@@ -36,6 +34,7 @@ public class BookModel implements CRUD {
             while (objResult.next()) {
 
                 Book objBook = new Book();
+                Author objAuthor = new Author();
 
                 objBook.setId_book(objResult.getInt("books.id_book"));
                 objBook.setTitle(objResult.getString("books.title"));
@@ -167,6 +166,8 @@ public class BookModel implements CRUD {
     @Override
     public Object findById(int id) {
 
+        Author objAuthor = new Author();
+
         // 1. Abrir la conexión
         Connection objConnection = ConfigDB.openConnection();
         Book objBook = null;
@@ -222,6 +223,7 @@ public class BookModel implements CRUD {
 
             while (objResult.next()) {
 
+                Author objAuthor = new Author();
                 Book objBook = new Book();
 
                 objBook.setId_book(objResult.getInt("books.id_book"));
