@@ -4,6 +4,7 @@ import entity.Coder;
 import model.CoderModel;
 
 import javax.swing.*;
+import java.util.List;
 
 public class CoderController {
 
@@ -18,23 +19,32 @@ public class CoderController {
 
     // Método para listar todos los coder
     public void getAll() {
+        String list = this.getAll(objCoderModel.findAll());
+
+        // Mostramos toda la lista
+        JOptionPane.showMessageDialog(null, list);
+    }
+
+    //Sobreescribir un método, metodos que se llaman igual pero hacen cosas diferentes
+    public String getAll(List<Object> listObject) {
+
         String list = "Coders list \n";
 
         // Iteramos sobre la lista que devuelve el método find All
-        for (Object obj : this.objCoderModel.findAll()) {
+        for (Object obj : listObject) {
 
-            // Convertimos o casteamos el objeto tipo Objetct a un coder
+            // Convertimos o casteamos el objeto tipo Object a un coder
             Coder objCoder = (Coder) obj;
 
             // Concatenamos la información
             list += objCoder.toString() + "\n";
 
         }
+        return list;
 
-        // Mostramos toda la lista
-        JOptionPane.showMessageDialog(null, list);
     }
 
+    // Método para crear coders
     public void create() {
         Coder objCoder = new Coder();
 
@@ -51,6 +61,7 @@ public class CoderController {
         JOptionPane.showMessageDialog(null, objCoder.toString());
     }
 
+    // Método para eliminar coders
     public void delete() {
         String listCoderString = "🤷‍♂️ CODER LIST \n";
 
@@ -75,15 +86,42 @@ public class CoderController {
         }
     }
 
+    // Método para actualizar coders
+    public void update() {
+
+        //Listamos
+        String listCoders = this.getAll(this.objCoderModel.findAll());
+
+        //Pedimos el ID
+        int idUpdate = Integer.parseInt(JOptionPane.showInputDialog(listCoders + "\n Insert the coder ID to edit "));
+
+        //Verificamos el ID
+        Coder objCoder = (Coder) this.objCoderModel.findById(idUpdate);
+
+        if (objCoder == null) {
+            JOptionPane.showMessageDialog(null, "Coder not found");
+        } else {
+            String name = JOptionPane.showInputDialog(null, "Enter new coder name", objCoder.getName());
+            String clan = JOptionPane.showInputDialog(null, "Enter new coder clan", objCoder.getClan());
+            int age = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter new coder age", String.valueOf(objCoder.getAge())));
+
+            objCoder.setName(name);
+            objCoder.setAge(age);
+            objCoder.setClan(clan);
+
+            this.objCoderModel.update(objCoder);
+        }
+
+    }
+
     public void getCoderByName() {
         String list = "Coder list By Name \n";
 
         String nameSearch = JOptionPane.showInputDialog("Insert name to find");
 
-        if(objCoderModel.findByName(nameSearch).isEmpty()){
+        if (objCoderModel.findByName(nameSearch).isEmpty()) {
             list += "No coders found";
-        }
-        else{
+        } else {
 
             // Iteramos sobre la lista que devuelve el método find All
             for (Object obj : this.objCoderModel.findByName(nameSearch)) {

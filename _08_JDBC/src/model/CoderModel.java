@@ -61,7 +61,42 @@ public class CoderModel implements CRUD {
 
     @Override
     public boolean update(Object object) {
-        return false;
+        // 1. Abrir la conexión
+        Connection objConnection = ConfigDB.openConnection();
+
+        //2. Convertir el objeto
+        Coder objCoder = (Coder) object;
+
+        //3. Variable bandera para saber si se actualizó
+        boolean isUpdated = false;
+
+        try {
+            //4. Creamos la sentencia SQL
+            String sql = "UPDATE coder SET name = ?, age = ?, clan = ? WHERE id = ? ";
+
+            //5. Preparamos el Statement
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            //6. Dar Valor a los signos de interrogación (Parámetros de Query)
+            objPrepare.setString(1, objCoder.getName());
+            objPrepare.setInt(2, objCoder.getAge());
+            objPrepare.setString(3, objCoder.getClan());
+            objPrepare.setInt(4, objCoder.getId());
+
+            //7. Ejecutamos el Query
+            int rowAffected = objPrepare.executeUpdate();
+
+            if (rowAffected > 0) {
+                isUpdated = true;
+                JOptionPane.showMessageDialog(null, "The update was successfully");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        //8. Cerrar la conexión
+        ConfigDB.closeConnection();
+        return isUpdated;
     }
 
     @Override
@@ -77,7 +112,7 @@ public class CoderModel implements CRUD {
 
         try {
             //4. Escribir la sentencia SQL
-            String sql = "DELETE FROM coder WHERE  id = ?;";
+            String sql = "DELETE FROM coder WHERE id = ?;";
 
             //5. Preparamos el statement
             PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -89,7 +124,7 @@ public class CoderModel implements CRUD {
 
             int totalAffectedRows = objPrepare.executeUpdate();
 
-            if (totalAffectedRows>0){
+            if (totalAffectedRows > 0) {
                 isDeleted = true;
                 JOptionPane.showMessageDialog(null, "The delete was successful.");
             }
@@ -158,7 +193,7 @@ public class CoderModel implements CRUD {
         Connection objConnection = ConfigDB.openConnection();
         Coder objCoder = null;
 
-        try{
+        try {
             //2. Sentencia SQL
             String sql = "SELECT * FROM coder WHERE id = ?;";
 
@@ -172,15 +207,14 @@ public class CoderModel implements CRUD {
             ResultSet objResult = objPrepare.executeQuery();
 
             //6. Mientras haya un registro siguiente entonces
-            while(objResult.next()){
+            while (objResult.next()) {
                 objCoder = new Coder();
                 objCoder.setId(objResult.getInt("id"));
                 objCoder.setName(objResult.getString("name"));
                 objCoder.setClan(objResult.getString("clan"));
                 objCoder.setAge(objResult.getInt("age"));
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
@@ -191,7 +225,7 @@ public class CoderModel implements CRUD {
     }
 
     @Override
-    public List<Object> findByName(String name){
+    public List<Object> findByName(String name) {
 
         //1. Abrimos la conexión
         Connection objConnection = ConfigDB.openConnection();
@@ -199,9 +233,9 @@ public class CoderModel implements CRUD {
         // 2. Inicializar la lista donde se guardarán los registros que devuelve la base de datos
         List<Object> listCoders = new ArrayList<>();
 
-        try{
+        try {
             // 3. Escribir la sentencia SQL
-            String sql = "SELECT * FROM coder WHERE name LIKE '%" + name +"%';";
+            String sql = "SELECT * FROM coder WHERE name LIKE '%" + name + "%';";
 
             // 4. Utilizar PrepareStatement
             PreparedStatement objPrepareStatement = (PreparedStatement) objConnection.prepareStatement(sql);
@@ -210,7 +244,7 @@ public class CoderModel implements CRUD {
             ResultSet objResult = (ResultSet) objPrepareStatement.executeQuery();
 
             //6. Obtener los resultados
-            while(objResult.next()){
+            while (objResult.next()) {
 
                 // Creamos una instancia de coder
                 Coder objCoder = new Coder();
@@ -226,7 +260,7 @@ public class CoderModel implements CRUD {
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 

@@ -8,7 +8,7 @@ public class Main {
         ConfigDB.openConnection();
 
         CoderController objCoderController = new CoderController();
-        String option = "";
+        String option;
 
         do {
             option = JOptionPane.showInputDialog("""
@@ -17,7 +17,7 @@ public class Main {
                         2. Insert Coders
                         3. Update Coder
                         4. Delete Coder
-                        5. Get by name
+                        5. Search coder by name
                         6. Exit
                     """);
 
@@ -27,6 +27,9 @@ public class Main {
                     break;
                 case "2":
                     objCoderController.create();
+                    break;
+                case "3":
+                    objCoderController.update();
                     break;
                 case "4":
                     objCoderController.delete();
