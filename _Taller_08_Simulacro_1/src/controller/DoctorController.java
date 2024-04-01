@@ -5,6 +5,7 @@ import entity.Specialty;
 import model.DoctorModel;
 import model.SpecialtyModel;
 
+import javax.print.Doc;
 import javax.swing.*;
 import java.sql.Date;
 import java.util.List;
@@ -55,7 +56,6 @@ public class DoctorController {
 
     }
 
-
     // Método para crear Doctores
     public void create(){
 
@@ -77,6 +77,40 @@ public class DoctorController {
         // Inserto el objeto Doctor y lo casteo con el tipo de objeto Doctor
         objDoctor = (Doctor) this.objDoctorModel.insert(objDoctor);
 
+    }
+
+    // Método para actualizar Doctores
+    public void update(){
+
+        // Listamos los doctores
+        String listDoctors = this.getAll(this.objDoctorModel.findAll());
+
+        //Pedimos el ID
+        int idUpdateDoctor = Integer.parseInt(JOptionPane.showInputDialog(listDoctors + "\n Choose the Doctor ID to edit "));
+
+        // Verificamos el ID del doctor
+        Doctor objDoctor = (Doctor) this.objDoctorModel.findById(idUpdateDoctor);
+
+        if(objDoctor == null){
+            JOptionPane.showMessageDialog(null,"The doctor doesn't exist");
+        }
+        else{
+            String name = JOptionPane.showInputDialog(null,"Enter the new doctor name:", objDoctor.getName());
+            String last_name = JOptionPane.showInputDialog(null,"Enter the new doctor last name:", objDoctor.getLast_name());
+
+            // LLamo la lista de especialidades para mostrar al usuario el Id de la especialidad que quiere actualizar en el doctor
+            String listSpecialty = objSpecialtyController.getAll(this.objSpecialtyModel.findAll());
+            int id_specialty = Integer.parseInt(JOptionPane.showInputDialog(null,listSpecialty + "\n Enter the new doctor specialty:", objDoctor.getId_specialty()));
+
+            // Asigno los datos ingresados al doctor
+            objDoctor.setName(name);
+            objDoctor.setLast_name(last_name);
+            objDoctor.setId_specialty(id_specialty);
+
+            // Retorno el Doctor al modelo update del Doctor
+            this.objDoctorModel.update(objDoctor);
+
+        }
     }
 
 }

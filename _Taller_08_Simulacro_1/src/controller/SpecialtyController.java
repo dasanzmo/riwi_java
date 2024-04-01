@@ -8,8 +8,10 @@ import javax.swing.*;
 import java.util.List;
 
 public class SpecialtyController {
-    SpecialtyModel objSpecialtyModel;
-    public void Specialty_Controller(){
+
+    SpecialtyModel objSpecialtyModel ;
+
+    public SpecialtyController(){
         this.objSpecialtyModel = new SpecialtyModel();
     }
 

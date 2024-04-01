@@ -17,10 +17,12 @@ public class Main {
         do {
             option = JOptionPane.showInputDialog("""
                         MENÚ
-                        1. Authors Admin
-                        2. Books Admin
-                        3. List Books by Author
-                        4. Exit
+                        1. 🩺 Admin Doctors
+                        2. 📃 Admin Specialties
+                        3. 👨‍🦳 Admin Patients
+                        4. 🕛 Admin Appointments
+                        5. 🔎 Search
+                        6. 🚪 Exit
                     """);
 
             switch (option) {
@@ -32,11 +34,11 @@ public class Main {
                     do {
                         optionA = JOptionPane.showInputDialog("""
                                     MENÚ
-                                    1. List Authors
-                                    2. Insert Author
-                                    3. Update Author
-                                    4. Delete Author
-                                    5. Exit
+                                    1. 👨🏻‍⚕️ List Doctors
+                                    2. ➕ Add Doctor
+                                    3. ✏ Update Doctor
+                                    4. ❌ Delete Doctor
+                                    5. 🚪 Exit
                                 """);
 
                         // Switch Authors Admin
@@ -48,7 +50,7 @@ public class Main {
                                 objDoctorController.create();
                                 break;
                             case "3":
-
+                                objDoctorController.update();
                                 break;
                             case "4":
 
@@ -64,11 +66,11 @@ public class Main {
                     do {
                         optionB = JOptionPane.showInputDialog("""
                                     MENÚ
-                                    1. List Books
-                                    2. Insert Book
-                                    3. Update Book
-                                    4. Delete Book
-                                    5. Exit
+                                    1. List Specialties
+                                    2. ➕ Add Specialty
+                                    3. ✏ Update Specialty
+                                    4. ❌ Delete Specialty
+                                    5. 🚪 Exit
                                 """);
 
                         // Switch Books Admin
@@ -96,7 +98,7 @@ public class Main {
 
             }
 
-        } while (!option.equals("4"));
+        } while (!option.equals("6"));
 
     }
 }

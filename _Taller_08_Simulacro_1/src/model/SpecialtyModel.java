@@ -16,6 +16,39 @@ import java.util.List;
 public class SpecialtyModel implements CRUD {
 
     @Override
+    public List<Object> findAll() {
+
+        Connection objConnection = ConfigDB.openConnection();
+
+        List<Object> listSpecialty = new ArrayList<>();
+
+        try {
+
+            String sql = "SELECT * FROM specialty ORDER BY specialty.id_specialty ASC ";
+
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            ResultSet objResult = (ResultSet) objPrepare.executeQuery();
+
+            while (objResult.next()) {
+
+                Specialty objSpecialty = new Specialty();
+
+                objSpecialty.setId_specialty(objResult.getInt("specialty.id_specialty"));
+                objSpecialty.setName(objResult.getString("specialty.name"));
+                objSpecialty.setDescription(objResult.getString("specialty.description"));
+
+                listSpecialty.add(objSpecialty);
+
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Data acquisition error" + e.getMessage());
+        }
+        return listSpecialty;
+    }
+
+    @Override
     public Object insert(Object object) {
 
         // 1. Abrir la conexión
@@ -26,7 +59,7 @@ public class SpecialtyModel implements CRUD {
 
         try{
             // 3. Crear el SQL
-            String sql = "specialty(name,description)VALUES(?,?)";
+            String sql = "INSERT INTO specialty(name,description)VALUES(?,?)";
 
             // 4. Preparar el statement
             PreparedStatement objPrepare = (PreparedStatement) objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -69,38 +102,6 @@ public class SpecialtyModel implements CRUD {
     @Override
     public boolean delete(Object object) {
         return false;
-    }
-
-    @Override
-    public List<Object> findAll() {
-        Connection objConnection = ConfigDB.openConnection();
-
-        List<Object> listSpecialty = new ArrayList<>();
-
-        try {
-
-            String sql = "SELECT * FROM specialty ORDER BY specialty.id_specialty ASC ";
-
-            PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-
-            ResultSet objResult = (ResultSet) objPrepare.executeQuery();
-
-            while (objResult.next()) {
-
-                Specialty objSpecialty = new Specialty();
-
-                objSpecialty.setId_specialty(objResult.getInt("specialty.id_specialty"));
-                objSpecialty.setName(objResult.getString("specialty.name"));
-                objSpecialty.setDescription(objResult.getString("specialty.description"));
-
-                listSpecialty.add(objSpecialty);
-
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data acquisition error" + e.getMessage());
-        }
-        return listSpecialty;
     }
 
     @Override

@@ -86,7 +86,7 @@ FROM appointment
 INNER JOIN doctor ON appointment.id_doctor = doctor.id_doctor
 INNER JOIN patient ON appointment.id_patient = patient.id_patient;
 
-SELECT * FROM specialty 
-INNER JOIN doctor ON doctor.id_specialty = specialty.id_specialty;
+SELECT * FROM doctor
+INNER JOIN specialty ON doctor.id_specialty = specialty.id_specialty;
 
 
