@@ -89,4 +89,20 @@ INNER JOIN patient ON appointment.id_patient = patient.id_patient;
 SELECT * FROM doctor
 INNER JOIN specialty ON doctor.id_specialty = specialty.id_specialty;
 
+SELECT * FROM appointment 
+INNER JOIN patient ON appointment.id_patient = patient.id_patient
+INNER JOIN doctor ON appointment.id_doctor = doctor.id_doctor
+INNER JOIN specialty ON doctor.id_specialty = specialty.id_specialty;
+
+SELECT * FROM appointment
+INNER JOIN patient ON appointment.id_patient = patient.id_patient
+INNER JOIN doctor ON appointment.id_doctor = doctor.id_doctor
+INNER JOIN specialty ON doctor.id_specialty = specialty.id_specialty
+WHERE date_appointment LIKE '%2024-05-20%';
+
+SELECT * FROM doctor
+INNER JOIN specialty ON doctor.id_specialty = specialty.id_specialty WHERE specialty.id_specialty = 1;
+
+
+
 

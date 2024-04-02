@@ -1,7 +1,7 @@
 package entity;
 
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 
 public class Appointment {
 
@@ -14,6 +14,8 @@ public class Appointment {
 
     private Doctor objDoctor;
     private Patient objPatient;
+
+    private Specialty objSpecialty;
 
     public Appointment() {
     }
@@ -92,12 +94,21 @@ public class Appointment {
         this.objPatient = objPatient;
     }
 
+    public Specialty getObjSpecialty() {
+        return objSpecialty;
+    }
+
+    public void setObjSpecialty(Specialty objSpecialty) {
+        this.objSpecialty = objSpecialty;
+    }
+
     @Override
     public String toString() {
         return "Appointment: " +
                 "Id: " + id_appointment + '\'' +
-                ", Patient: '" + objPatient.getName() + '\'' +
-                ", Doctor: '" + objDoctor.getName() + '\'' +
+                ", Patient: '" + objPatient.getName() + ' ' + objPatient.getLast_name() + '\'' +
+                ", Doctor: '" + objDoctor.getName() + ' ' + objDoctor.getLast_name() + '\'' +
+                ", Specialty: '" + objSpecialty.getName() + '\'' +
                 ", Date appointment: '" + date_appointment + '\'' +
                 ", Appointment time: '" + appointment_time + '\'' +
                 ", Reason: '" + reason + '\'';

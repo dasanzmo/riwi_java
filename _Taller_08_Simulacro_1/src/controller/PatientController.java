@@ -1,6 +1,6 @@
 package controller;
 
-import entity.Patient;
+import entity.*;
 import entity.Patient;
 import entity.Patient;
 import entity.Patient;
@@ -124,5 +124,34 @@ public class PatientController {
                 this.objPatientModel.delete(objPatient);
             }
         }
+    }
+
+    // Método para consultar pacientes por documento de identidad
+    public void patientsByDocument() {
+
+        String list = "";
+
+        String document = JOptionPane.showInputDialog("Insert Identity document to find patient");
+
+        if (objPatientModel.findPatienByDI(document).isEmpty()) {
+            list += "No patients found";
+        } else {
+            list = "Patients by Identity document \n";
+
+            // Iteramos sobre la lista que devuelve el método find All
+            for (Object obj : this.objPatientModel.findPatienByDI(document)) {
+
+                // Convertimos o casteamos el objeto tipo Objetct a un patient
+                Patient objPatient = (Patient) obj;
+
+                // Concatenamos la información
+                list += objPatient.toString() + "\n";
+
+            }
+
+        }
+
+        // Mostramos toda la lista
+        JOptionPane.showMessageDialog(null, list);
     }
 }

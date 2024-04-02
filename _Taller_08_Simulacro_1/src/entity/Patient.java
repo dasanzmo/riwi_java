@@ -68,6 +68,6 @@ public class Patient {
                 ", Name: '" + name + '\'' +
                 ", Last name: '" + last_name + '\'' +
                 ", Birthday: '" + birthdate + '\'' +
-                ", Identify document: '" + identity_document + '\'';
+                ", Identity document: '" + identity_document + '\'';
     }
 }

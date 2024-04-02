@@ -1,6 +1,7 @@
 package controller;
 
 import entity.Doctor;
+import entity.Patient;
 import entity.Specialty;
 import model.DoctorModel;
 import model.SpecialtyModel;
@@ -137,6 +138,38 @@ public class DoctorController {
                 this.objDoctorModel.delete(objDoctor);
             }
         }
+    }
+
+    // Método para consultar doctores por especialidad
+    public void doctorsBySpecialty() {
+
+        String list = "";
+
+        String listSpecialties = this.objSpecialtyController.getAll(this.objSpecialtyModel.findAll());
+        int id = Integer.parseInt(JOptionPane.showInputDialog(listSpecialties + "\n Insert ID Specialty to find patient"));
+
+        Specialty objSpecialty = (Specialty) this.objSpecialtyModel.findById(id);
+
+        if (objSpecialty == null) {
+            list += "Specialty not found";
+        } else {
+            list = "Doctors by Specialty " + objSpecialty.getName() + "\n";
+
+            // Iteramos sobre la lista que devuelve el método find All
+            for (Object obj : this.objDoctorModel.findDoctorBySpecialty(id)) {
+
+                // Convertimos o casteamos el objeto tipo Objetct a un patient
+                Doctor objDoctor = (Doctor) obj;
+
+                // Concatenamos la información
+                list += objDoctor.toString() + "\n";
+
+            }
+
+        }
+
+        // Mostramos toda la lista
+        JOptionPane.showMessageDialog(null, list);
     }
 
 }

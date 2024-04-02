@@ -3,6 +3,7 @@ package model;
 import database.CRUD;
 import database.ConfigDB;
 import entity.Doctor;
+import entity.Patient;
 import entity.Specialty;
 
 import javax.swing.*;
@@ -222,7 +223,53 @@ public class DoctorModel implements CRUD {
 
     }
 
-    public List<Object> findDoctorBySpecialty(int document) {
-        return null;
+    public List<Object> findDoctorBySpecialty(int id) {
+
+        //1. Abrimos la conexión
+        Connection objConnection = ConfigDB.openConnection();
+
+        // 2. Inicializar la lista donde se guardarán los registros que devuelve la base de datos
+        List<Object> listDoctors = new ArrayList<>();
+
+        try {
+            // 3. Escribir la sentencia SQL
+            String sql = "SELECT * FROM doctor INNER JOIN specialty ON doctor.id_specialty = specialty.id_specialty WHERE specialty.id_specialty = " + id + ";";
+
+            // 4. Utilizar PrepareStatement
+            PreparedStatement objPrepareStatement = (PreparedStatement) objConnection.prepareStatement(sql);
+
+            // 5. Ejecutar el Query o Prepare
+            ResultSet objResult = (ResultSet) objPrepareStatement.executeQuery();
+
+            //6. Obtener los resultados
+            while (objResult.next()) {
+
+                // Creamos una instancia de coder
+                Doctor objDoctor = new Doctor();
+                Specialty objSpecialty = new Specialty();
+
+                // Llenamos nuestro objeto con lo que devuelve la base de datos (ResultSet)
+                objDoctor.setId_doctor(objResult.getInt(1));
+                objDoctor.setName(objResult.getString("doctor.name"));
+                objDoctor.setLast_name(objResult.getString("doctor.last_name"));
+                objDoctor.setId_specialty(objResult.getInt("doctor.id_specialty"));
+                objSpecialty.setName(objResult.getString("specialty.name"));
+                objSpecialty.setDescription(objResult.getString("specialty.description"));
+
+                objDoctor.setSpecialtyDoctor(objSpecialty);
+
+                // Finalmente agregamos el coder a la lista
+                listDoctors.add(objDoctor);
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        // 7. Cerramos la conexión
+        ConfigDB.closeConnection();
+        return listDoctors;
+
     }
 }

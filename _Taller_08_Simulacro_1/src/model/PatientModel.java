@@ -8,10 +8,7 @@ import entity.Patient;
 import entity.Patient;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -220,6 +217,52 @@ public class PatientModel implements CRUD {
         ConfigDB.closeConnection();
 
         return objPatient;
+
+    }
+
+    public List<Object> findPatienByDI(String document) {
+
+        //1. Abrimos la conexión
+        Connection objConnection = ConfigDB.openConnection();
+
+        // 2. Inicializar la lista donde se guardarán los registros que devuelve la base de datos
+        List<Object> listPatients = new ArrayList<>();
+
+        try {
+            // 3. Escribir la sentencia SQL
+            String sql = "SELECT * FROM patient WHERE identity_document = " + document + ";";
+
+            // 4. Utilizar PrepareStatement
+            PreparedStatement objPrepareStatement = (PreparedStatement) objConnection.prepareStatement(sql);
+
+            // 5. Ejecutar el Query o Prepare
+            ResultSet objResult = (ResultSet) objPrepareStatement.executeQuery();
+
+            //6. Obtener los resultados
+            while (objResult.next()) {
+
+                // Creamos una instancia de coder
+                Patient objPatient = new Patient();
+
+                // Llenamos nuestro objeto con lo que devuelve la base de datos (ResultSet)
+                objPatient.setId_patient(objResult.getInt(1));
+                objPatient.setName(objResult.getString("patient.name"));
+                objPatient.setLast_name(objResult.getString("patient.last_name"));
+                objPatient.setBirthdate(objResult.getDate("patient.birthdate"));
+                objPatient.setIdentity_document(objResult.getString("patient.identity_document"));
+
+                // Finalmente agregamos el coder a la lista
+                listPatients.add(objPatient);
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        // 7. Cerramos la conexión
+        ConfigDB.closeConnection();
+        return listPatients;
 
     }
 }
