@@ -2,7 +2,9 @@ package model;
 
 import database.CRUD;
 import database.ConfigDB;
-import entity.Doctor;
+import entity.Specialty;
+import entity.Specialty;
+import entity.Specialty;
 import entity.Specialty;
 
 import javax.swing.*;
@@ -96,17 +98,121 @@ public class SpecialtyModel implements CRUD {
 
     @Override
     public boolean update(Object object) {
-        return false;
+        // 1. Abrir la conexión
+        Connection objConnection = ConfigDB.openConnection();
+
+        //2. Convertir el objeto
+        Specialty objSpecialty = (Specialty) object;
+
+        //3. Variable bandera para saber si se actualizó
+        boolean isUpdated = false;
+
+        try {
+            //4. Creamos la sentencia SQL
+            String sql = "UPDATE specialty SET name = ?, description = ? WHERE id_specialty = ? ";
+
+            //5. Preparamos el Statement
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            //6. Dar Valor a los signos de interrogación (Parámetros de Query)
+            objPrepare.setString(1, objSpecialty.getName());
+            objPrepare.setString(2, objSpecialty.getDescription());
+            objPrepare.setInt(3,objSpecialty.getId_specialty());
+
+            //7. Ejecutamos el Query
+            int rowAffected = objPrepare.executeUpdate();
+
+            if (rowAffected > 0) {
+                isUpdated = true;
+                JOptionPane.showMessageDialog(null, objSpecialty.getName() + " was updated successfully");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        //8. Cerrar la conexión
+        ConfigDB.closeConnection();
+        return isUpdated;
     }
 
     @Override
     public boolean delete(Object object) {
-        return false;
+
+        //1. Convertir el objeto a la entidad
+        Specialty objSpecialty = (Specialty) object;
+
+        //2. Variable booleana para medir el estado de la eliminación
+        boolean isDeleted = false;
+
+        //3. Abrir la conexión
+        Connection objConnection = ConfigDB.openConnection();
+
+        try {
+            //4. Escribir la sentencia SQL
+            String sql = "DELETE FROM specialty WHERE id_specialty = ?;";
+
+            //5. Preparamos el statement
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+            //6. Asignamos el valor al ?
+            objPrepare.setInt(1, objSpecialty.getId_specialty());
+
+            //7. ExecuteUpdate devuelve la cantidad filas afectadas por la sentencia SQL ejecutada.
+
+            int totalAffectedRows = objPrepare.executeUpdate();
+
+            if (totalAffectedRows > 0) {
+                isDeleted = true;
+                JOptionPane.showMessageDialog(null, objSpecialty.getName() + " was deleted successfully.");
+            }
+
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        //8. Cerrar la conexión
+        ConfigDB.closeConnection();
+        return isDeleted;
     }
 
     @Override
     public Object findById(int id) {
-        return null;
+
+        // 1. Abrir la conexión
+        Connection objConnection = ConfigDB.openConnection();
+        Specialty objSpecialty = null;
+
+        try {
+            //2. Sentencia SQL
+            String sql = "SELECT * FROM specialty WHERE id_specialty = ?;";
+
+            //3. Preparar el statement
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            //4. Damos el valor ?
+            objPrepare.setInt(1, id);
+
+            //5. Ejecutamos el query
+            ResultSet objResult = objPrepare.executeQuery();
+
+            //6. Mientras haya un registro siguiente entonces
+            while (objResult.next()) {
+                objSpecialty = new Specialty();
+                objSpecialty.setId_specialty(objResult.getInt("id_specialty"));
+                objSpecialty.setName(objResult.getString("name"));
+                objSpecialty.setDescription(objResult.getString("description"));
+
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        //7. Cerrar la conexión
+        ConfigDB.closeConnection();
+
+        return objSpecialty;
+
     }
 
 }

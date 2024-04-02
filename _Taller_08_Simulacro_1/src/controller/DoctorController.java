@@ -113,4 +113,30 @@ public class DoctorController {
         }
     }
 
+    // Método para eliminar Doctores
+    public void delete() {
+
+        String listDoctorString = "Doctors List \n";
+
+        for (Object obj : this.objDoctorModel.findAll()) {
+            Doctor objDoctor = (Doctor) obj;
+            listDoctorString += objDoctor.toString() + "\n";
+        }
+
+        int confirm = 1;
+        int idDelete = Integer.parseInt(JOptionPane.showInputDialog(listDoctorString + "\n Enter the doctor ID to delete"));
+        Doctor objDoctor = (Doctor) this.objDoctorModel.findById(idDelete);
+
+        if (objDoctor == null) {
+            JOptionPane.showMessageDialog(null, " Doctor not found.");
+        } else {
+            confirm = JOptionPane.showConfirmDialog(null, "Are your sure want to delete the doctor: \n" + objDoctor.getName());
+
+            //Si el usuario escogió que si entonces eliminamos.
+            if (confirm == 0) {
+                this.objDoctorModel.delete(objDoctor);
+            }
+        }
+    }
+
 }

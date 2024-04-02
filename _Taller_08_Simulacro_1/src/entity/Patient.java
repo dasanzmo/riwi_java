@@ -1,6 +1,7 @@
 package entity;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 public class Patient {
 
@@ -45,7 +46,7 @@ public class Patient {
         this.last_name = last_name;
     }
 
-    public Date getBirthdate() {
+    public java.sql.Date getBirthdate() {
         return birthdate;
     }
 
@@ -63,12 +64,10 @@ public class Patient {
 
     @Override
     public String toString() {
-        return "Patient{" +
-                "id_patient=" + id_patient +
-                ", name='" + name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", birthdate=" + birthdate +
-                ", identity_document='" + identity_document + '\'' +
-                '}';
+        return  "Id: " + id_patient +
+                ", Name: '" + name + '\'' +
+                ", Last name: '" + last_name + '\'' +
+                ", Birthday: '" + birthdate + '\'' +
+                ", Identify document: '" + identity_document + '\'';
     }
 }

@@ -2,8 +2,10 @@ package model;
 
 import database.CRUD;
 import database.ConfigDB;
-import entity.Doctor;
-import entity.Specialty;
+import entity.*;
+import entity.Patient;
+import entity.Patient;
+import entity.Patient;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -11,20 +13,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class DoctorModel implements CRUD {
+public class PatientModel implements CRUD {
 
     @Override
     public List<Object> findAll() {
+
         Connection objConnection = ConfigDB.openConnection();
 
-        List<Object> listDoctors = new ArrayList<>();
+        List<Object> listPatient = new ArrayList<>();
 
         try {
 
-            String sql = "SELECT * FROM doctor INNER JOIN specialty ON doctor.id_specialty = specialty.id_specialty ORDER BY doctor.id_doctor ASC ";
+            String sql = "SELECT * FROM patient ORDER BY patient.id_patient ASC ";
 
             PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
@@ -32,27 +34,22 @@ public class DoctorModel implements CRUD {
 
             while (objResult.next()) {
 
-                Doctor objDoctor = new Doctor();
-                Specialty objSpecialty = new Specialty();
+                Patient objPatient = new Patient();
 
-                objDoctor.setId_doctor(objResult.getInt("doctor.id_doctor"));
-                objDoctor.setName(objResult.getString("doctor.name"));
-                objDoctor.setLast_name(objResult.getString("doctor.last_name"));
-                objSpecialty.setId_specialty(objResult.getInt("specialty.id_specialty"));
-                objSpecialty.setName(objResult.getString("specialty.name"));
-                objSpecialty.setDescription(objResult.getString("specialty.description"));
+                objPatient.setId_patient(objResult.getInt("id_patient"));
+                objPatient.setName(objResult.getString("name"));
+                objPatient.setLast_name(objResult.getString("last_name"));
+                objPatient.setBirthdate(objResult.getDate("birthdate"));
+                objPatient.setIdentity_document(objResult.getString("identity_document"));
 
-                //Agrego el objeto Doctor al objeto Libro
-                objDoctor.setSpecialtyDoctor(objSpecialty);
-
-                listDoctors.add(objDoctor);
+                listPatient.add(objPatient);
 
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data acquisition error" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Data acquisition error, " + e.getMessage());
         }
-        return listDoctors;
+        return listPatient;
     }
 
     @Override
@@ -62,19 +59,20 @@ public class DoctorModel implements CRUD {
         Connection objConnection = ConfigDB.openConnection();
 
         // 2. Castear el objeto
-        Doctor objDoctor = (Doctor) object;
+        Patient objPatient = (Patient) object;
 
         try{
             // 3. Crear el SQL
-            String sql = "INSERT INTO doctor(name,last_name,id_specialty)VALUES(?,?,?)";
+            String sql = "INSERT INTO patient(name,last_name,birthdate,identity_document)VALUES(?,?,?,?)";
 
             // 4. Preparar el statement
             PreparedStatement objPrepare = (PreparedStatement) objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
             // 5. Asignar los signos de interrogación
-            objPrepare.setString(1, objDoctor.getName());
-            objPrepare.setString(2,objDoctor.getLast_name());
-            objPrepare.setInt(3,objDoctor.getId_specialty());
+            objPrepare.setString(1, objPatient.getName());
+            objPrepare.setString(2,objPatient.getLast_name());
+            objPrepare.setDate(3,objPatient.getBirthdate());
+            objPrepare.setString(4,objPatient.getIdentity_document());
 
             // 6. Ejecutamos el Query
             objPrepare.execute();
@@ -82,24 +80,24 @@ public class DoctorModel implements CRUD {
             // 7. Obtener el resultado
             ResultSet objResult = objPrepare.getGeneratedKeys();
 
-            // 8. Recorremos el resultado mientras siga tenga elementos para mostrar
+            // 8. Recorremos el resultado y asignamos el id generado al id_patient
             while(objResult.next()){
-                objDoctor.setId_doctor(objResult.getInt(1));
+                objPatient.setId_patient(objResult.getInt(1));
             }
 
             // 9. Cerramos el prepareStatement
             objPrepare.close();
-            JOptionPane.showMessageDialog(null, objDoctor.getName() + " was created successfully");
+            JOptionPane.showMessageDialog(null, objPatient.getName()+ " was created successfully");
         }
         catch (Exception e){
 
-            JOptionPane.showMessageDialog(null,"Error adding Doctor" + e.getMessage());
+            JOptionPane.showMessageDialog(null,"Error adding Patient, " + e.getMessage());
 
         }
 
         // 10. Cerramos la conexión
         ConfigDB.closeConnection();
-        return objDoctor;
+        return objPatient;
     }
 
     @Override
@@ -108,30 +106,31 @@ public class DoctorModel implements CRUD {
         Connection objConnection = ConfigDB.openConnection();
 
         //2. Convertir el objeto
-        Doctor objDoctor = (Doctor) object;
+        Patient objPatient = (Patient) object;
 
         //3. Variable bandera para saber si se actualizó
         boolean isUpdated = false;
 
         try {
             //4. Creamos la sentencia SQL
-            String sql = "UPDATE doctor SET name = ?, last_name = ?, id_specialty = ? WHERE id_doctor = ? ";
+            String sql = "UPDATE patient SET name = ?, last_name = ?, birthdate = ?, identity_document = ? WHERE id_patient = ? ";
 
             //5. Preparamos el Statement
             PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
             //6. Dar Valor a los signos de interrogación (Parámetros de Query)
-            objPrepare.setString(1, objDoctor.getName());
-            objPrepare.setString(2, objDoctor.getLast_name());
-            objPrepare.setInt(3, objDoctor.getId_specialty());
-            objPrepare.setInt(4,objDoctor.getId_doctor());
+            objPrepare.setString(1, objPatient.getName());
+            objPrepare.setString(2,objPatient.getLast_name());
+            objPrepare.setDate(3,objPatient.getBirthdate());
+            objPrepare.setString(4,objPatient.getIdentity_document());
+            objPrepare.setInt(5,objPatient.getId_patient());
 
             //7. Ejecutamos el Query
             int rowAffected = objPrepare.executeUpdate();
 
             if (rowAffected > 0) {
                 isUpdated = true;
-                JOptionPane.showMessageDialog(null, objDoctor.getName() + " was updated successfully");
+                JOptionPane.showMessageDialog(null, objPatient.getName() + " was updated successfully");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -146,7 +145,7 @@ public class DoctorModel implements CRUD {
     public boolean delete(Object object) {
 
         //1. Convertir el objeto a la entidad
-        Doctor objDoctor = (Doctor) object;
+        Patient objPatient = (Patient) object;
 
         //2. Variable booleana para medir el estado de la eliminación
         boolean isDeleted = false;
@@ -156,13 +155,13 @@ public class DoctorModel implements CRUD {
 
         try {
             //4. Escribir la sentencia SQL
-            String sql = "DELETE FROM doctor WHERE id_doctor = ?;";
+            String sql = "DELETE FROM patient WHERE id_patient = ?;";
 
             //5. Preparamos el statement
             PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
             //6. Asignamos el valor al ?
-            objPrepare.setInt(1, objDoctor.getId_doctor());
+            objPrepare.setInt(1, objPatient.getId_patient());
 
             //7. ExecuteUpdate devuelve la cantidad filas afectadas por la sentencia SQL ejecutada.
 
@@ -170,7 +169,7 @@ public class DoctorModel implements CRUD {
 
             if (totalAffectedRows > 0) {
                 isDeleted = true;
-                JOptionPane.showMessageDialog(null, objDoctor.getName() + " was deleted successfully.");
+                JOptionPane.showMessageDialog(null, objPatient.getName() + " was deleted successfully.");
             }
 
 
@@ -188,11 +187,11 @@ public class DoctorModel implements CRUD {
 
         // 1. Abrir la conexión
         Connection objConnection = ConfigDB.openConnection();
-        Doctor objDoctor = null;
+        Patient objPatient = null;
 
         try {
             //2. Sentencia SQL
-            String sql = "SELECT * FROM doctor WHERE id_doctor = ?;";
+            String sql = "SELECT * FROM patient WHERE id_patient = ?;";
 
             //3. Preparar el statement
             PreparedStatement objPrepare = objConnection.prepareStatement(sql);
@@ -205,11 +204,13 @@ public class DoctorModel implements CRUD {
 
             //6. Mientras haya un registro siguiente entonces
             while (objResult.next()) {
-                objDoctor = new Doctor();
-                objDoctor.setId_doctor(objResult.getInt("id_doctor"));
-                objDoctor.setName(objResult.getString("name"));
-                objDoctor.setLast_name(objResult.getString("last_name"));
-                objDoctor.setId_specialty(objResult.getInt("id_specialty"));
+                objPatient = new Patient();
+                objPatient.setId_patient(objResult.getInt("id_patient"));
+                objPatient.setName(objResult.getString("name"));
+                objPatient.setLast_name(objResult.getString("last_name"));
+                objPatient.setBirthdate(objResult.getDate("birthdate"));
+                objPatient.setIdentity_document(objResult.getString("identity_document"));
+
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -218,11 +219,7 @@ public class DoctorModel implements CRUD {
         //7. Cerrar la conexión
         ConfigDB.closeConnection();
 
-        return objDoctor;
+        return objPatient;
 
-    }
-
-    public List<Object> findDoctorBySpecialty(int document) {
-        return null;
     }
 }
