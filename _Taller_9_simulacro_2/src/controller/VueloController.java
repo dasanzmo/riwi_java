@@ -51,13 +51,13 @@ public class VueloController {
 
     }
 
-    // Método para crear Vueloes
+    // Método para crear Vuelos
     public void create(){
 
         // Creo un nuevo Vuelo
         Vuelo objVuelo = new Vuelo();
 
-        // Pidos los datos a insertar del paciente
+        // Pidos los datos a insertar del vuelo
         Object[] destinos = {"Medellin","Bogotá","Cali","Santa Marta","Cartagena"};
         String destino = String.valueOf(JOptionPane.showInputDialog(null,
                 "Insert flight's destination",
@@ -127,7 +127,7 @@ public class VueloController {
         }
     }
 
-    // Método para eliminar Vueloes
+    // Método para eliminar Vuelos
     public void delete() {
 
         String listVueloString = "✈ Flights List \n\n";

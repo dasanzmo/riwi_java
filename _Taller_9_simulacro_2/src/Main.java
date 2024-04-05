@@ -1,5 +1,6 @@
 import controller.AvionController;
 import controller.PasajeroController;
+import controller.ReservacionController;
 import controller.VueloController;
 import database.ConfigDB;
 
@@ -12,6 +13,7 @@ public class Main {
         PasajeroController objPasajeroController = new PasajeroController();
         AvionController objAvionController = new AvionController();
         VueloController objVueloController = new VueloController();
+        ReservacionController objReservacionController = new ReservacionController();
 
         String option;
 
@@ -21,7 +23,7 @@ public class Main {
                         1. 😎 Admin Passengers
                         2. ✈ Admin Planes
                         3. 🛫 Admin Flights
-                        4. 📆 Admin Reservations
+                        4. 📆 Admin Bookings
                         5. 🔎 Search
                         6. 🚪 Exit
                         \n
@@ -98,9 +100,9 @@ public class Main {
                         optionC = JOptionPane.showInputDialog("""
                                     ----- FLIGHTS MENU ----- \n
                                     1. ✈ List flights
-                                    2. ➕ Add flights
-                                    3. ✏ Update flights
-                                    4. ❌ Delete flights
+                                    2. ➕ Add flight
+                                    3. ✏ Update flight
+                                    4. ❌ Delete flight
                                     5. 👈 Go Back
                                     \n
                                 """);
@@ -121,6 +123,37 @@ public class Main {
                                 break;
                         }
                     } while (!optionC.equals("5"));
+                    break;
+
+                case "4":
+                    String optionD;
+                    do {
+                        optionD = JOptionPane.showInputDialog("""
+                                    ----- BOOKINGS MENU ----- \n
+                                    1. ✈ List bookings
+                                    2. ➕ Add booking
+                                    3. ✏ Update booking
+                                    4. ❌ Delete booking
+                                    5. 👈 Go Back
+                                    \n
+                                """);
+
+                        // Switch Bookings Admin
+                        switch (optionD) {
+                            case "1":
+                                objReservacionController.getAll();
+                                break;
+                            case "2":
+                                objReservacionController.create();
+                                break;
+                            case "3":
+                                objReservacionController.update();
+                                break;
+                            case "4":
+                                objReservacionController.delete();
+                                break;
+                        }
+                    } while (!optionD.equals("5"));
                     break;
             }
 

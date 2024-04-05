@@ -10,6 +10,7 @@ public class Reservacion {
     String asiento;
     private Pasajero objPasajero;
     private Vuelo objVuelo;
+    private Avion objAvion;
 
     public Reservacion() {
     }
@@ -62,16 +63,38 @@ public class Reservacion {
         this.asiento = asiento;
     }
 
+    public Pasajero getObjPasajero() {
+        return objPasajero;
+    }
+
+    public void setObjPasajero(Pasajero objPasajero) {
+        this.objPasajero = objPasajero;
+    }
+
+    public Vuelo getObjVuelo() {
+        return objVuelo;
+    }
+
+    public void setObjVuelo(Vuelo objVuelo) {
+        this.objVuelo = objVuelo;
+    }
+
+    public Avion getObjAvion() {
+        return objAvion;
+    }
+
+    public void setObjAvion(Avion objAvion) {
+        this.objAvion = objAvion;
+    }
+
     @Override
     public String toString() {
-        return "Reservacion{" +
-                "id_reservacion=" + id_reservacion +
-                ", id_pasajero=" + id_pasajero +
-                ", id_vuelo=" + id_vuelo +
-                ", fecha_reservacion=" + fecha_reservacion +
-                ", asiento='" + asiento + '\'' +
-                ", objPasajero=" + objPasajero +
-                ", objVuelo=" + objVuelo +
-                '}';
+        return "Booking number: " + id_reservacion + '\'' +
+                ", Passenger: '" + objPasajero.getNombre() + " " + objPasajero.getApellido() + '\'' +
+                ", Flight number: '" + id_vuelo + '\'' +
+                ", Flight destination: '" + objVuelo.getDestino() + '\'' +
+                ", Booking date: '" + fecha_reservacion + '\'' +
+                ", Seat: '" + asiento + '\'' +
+                ", Airplane: '" + objAvion.getModelo() + '\'';
     }
 }
