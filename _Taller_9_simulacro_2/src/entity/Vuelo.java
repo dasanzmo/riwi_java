@@ -72,13 +72,10 @@ public class Vuelo {
 
     @Override
     public String toString() {
-        return "Vuelo{" +
-                "id_vuelo=" + id_vuelo +
-                ", destino='" + destino + '\'' +
-                ", fecha_salida=" + fecha_salida +
-                ", hora_salida=" + hora_salida +
-                ", id_avion=" + id_avion +
-                ", objAvion=" + objAvion +
-                '}';
+        return "Flight Number: " + id_vuelo +
+                ", Flight destination to: " + destino  +
+                ", Departure date: " + fecha_salida +
+                ", Departure time=" + hora_salida +
+                ", Airplane: " + objAvion.getModelo();
     }
 }

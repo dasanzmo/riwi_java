@@ -1,5 +1,6 @@
 import controller.AvionController;
 import controller.PasajeroController;
+import controller.VueloController;
 import database.ConfigDB;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ public class Main {
 
         PasajeroController objPasajeroController = new PasajeroController();
         AvionController objAvionController = new AvionController();
+        VueloController objVueloController = new VueloController();
 
         String option;
 
@@ -29,7 +31,6 @@ public class Main {
 
                 // Passengers Menu
                 case "1":
-
                     String optionA;
                     do {
                         optionA = JOptionPane.showInputDialog("""
@@ -89,6 +90,37 @@ public class Main {
                                 break;
                         }
                     } while (!optionB.equals("5"));
+                    break;
+
+                case "3":
+                    String optionC;
+                    do {
+                        optionC = JOptionPane.showInputDialog("""
+                                    ----- FLIGHTS MENU ----- \n
+                                    1. ✈ List flights
+                                    2. ➕ Add flights
+                                    3. ✏ Update flights
+                                    4. ❌ Delete flights
+                                    5. 👈 Go Back
+                                    \n
+                                """);
+
+                        // Switch Flights Admin
+                        switch (optionC) {
+                            case "1":
+                                objVueloController.getAll();
+                                break;
+                            case "2":
+                                objVueloController.create();
+                                break;
+                            case "3":
+                                objVueloController.update();
+                                break;
+                            case "4":
+                                objVueloController.delete();
+                                break;
+                        }
+                    } while (!optionC.equals("5"));
                     break;
             }
 
