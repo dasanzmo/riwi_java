@@ -11,14 +11,8 @@ CREATE TABLE tienda (
     ubicacion varchar(255)
 );
 
-/*AGREGO VALORES A LA TABLA TIENDA*/
-INSERT INTO tienda(nombre, ubicacion) VALUES 
-("D'moda Outlet Guayabal","Guayabal"),
-("D'moda Outlet Poblado", "Poblado");
-
 /*HAGO UNA CONSULTA Y VERIFICO LA TABLA TIENDA*/
 SELECT *FROM tienda;
-
 
 /*CREO LA TABLA PRODUCTO*/
 CREATE TABLE producto(
@@ -30,21 +24,12 @@ CREATE TABLE producto(
     ON DELETE CASCADE
 );
 
-/*INSERTO VALORES A LA TABLA PRODUCTO*/
-INSERT INTO producto(nombre, precio, id_tienda,stock) VALUES 
-("Chaqueta Superdry",200.500),
-("Tenis Diesel Blancos",120.500);
-
-/*HAGO UNA CONSULTA Y VERIFICO LA TABLA PRODUCTO*/
-SELECT * from producto;
-
 /*MODIFICO LA TABLA PRODUCTO Y AGREGO UN CAMPO STOCK NUMÉRICO*/
 ALTER TABLE producto
 ADD COLUMN stock int(11);
 
-/*ACTUALIZO VALORES EN LA TABLA PRODUCTO EN LA COLUMNA STOCK*/
-UPDATE producto SET stock = 100 WHERE 'id_producto' = '1';
-UPDATE producto SET stock = 50 WHERE 'id_producto' = '2';
+/*HAGO UNA CONSULTA Y VERIFICO LA TABLA PRODUCTO*/
+SELECT * from producto;
 
 /*CREO LA TABLA CLIENTE*/
 CREATE TABLE cliente(
@@ -53,11 +38,6 @@ CREATE TABLE cliente(
     apellido varchar(255),
     email varchar(255)
 );
-
-/*INSERTO VALORES EN LA TABLA CLIENTE*/
-INSERT INTO cliente(nombre, apellido, email) VALUES 
-("Daniel","Sanchez","danielsanchezm92@gmail.com"),
-("Susana","Duque","susanaduque@gmail.com");
 
 /*HAGO UNA CONSULTA Y VERIFICO LA TABLA CLIENTE*/
 SELECT * from cliente;
@@ -75,10 +55,29 @@ CREATE TABLE compra(
     ON DELETE CASCADE
 );
 
+/*HAGO UNA CONSULTA Y VERIFICO LA TABLA TIENDA*/
+SELECT * from compra INNER JOIN cliente on compra.id_cliente = cliente.id_cliente;
+
+/*AGREGO VALORES A LA TABLA TIENDA*/
+INSERT INTO tienda(nombre, ubicacion) VALUES 
+("D'moda Outlet Guayabal","Guayabal"),
+("D'moda Outlet Poblado", "Poblado");
+
+/*INSERTO VALORES A LA TABLA PRODUCTO*/
+INSERT INTO producto(nombre, precio, id_tienda) VALUES 
+("Chaqueta Superdry",200.500, 1),
+("Tenis Diesel Blancos",120.500, 2);
+
+/*ACTUALIZO VALORES EN LA TABLA PRODUCTO EN LA COLUMNA STOCK*/
+UPDATE producto SET stock = 100 WHERE id_producto = 1;
+UPDATE producto SET stock = 50 WHERE id_producto = 2;
+
+/*INSERTO VALORES EN LA TABLA CLIENTE*/
+INSERT INTO cliente(nombre, apellido, email) VALUES 
+("Daniel","Sanchez","danielsanchezm92@gmail.com"),
+("Susana","Duque","susanaduque@gmail.com");
+
 /*AGREGO VALORES A LA TABLA COMPRA*/
 INSERT INTO compra(id_cliente, id_producto,cantidad) VALUES 
 (1,2,50),
 (2,1,100);
-
-/*HAGO UNA CONSULTA Y VERIFICO LA TABLA TIENDA*/
-SELECT * from compra INNER JOIN cliente on compra.id_cliente = cliente.id_cliente;

@@ -85,10 +85,13 @@ public class CompraController {
 
             // Inserto el objeto Compra y lo casteo con el tipo de objeto Compra
             objCompra = (Compra) this.objCompraModel.insert(objCompra);
-            this.objCompraModel.updateStock(objCompra);
+
+            Compra objProductoUpdate = (Compra) this.objCompraModel.findById(objCompra.getId_compra());
+            this.objCompraModel.updateStock(objProductoUpdate,objProductoUpdate.getObjProducto());
 
             // Capturo de la información de la compra creada
             Compra objCompraFactura = (Compra) this.objCompraModel.findById(objCompra.getId_compra());
+
 
             // Llamo el método para generar la factura
             this.generateInvoice(objCompraFactura);

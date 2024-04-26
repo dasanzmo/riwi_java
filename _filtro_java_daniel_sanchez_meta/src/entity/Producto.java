@@ -73,9 +73,8 @@ public class Producto {
                 "id_producto=" + id_producto +
                 ", nombre='" + nombre + '\'' +
                 ", precio=" + precio +
-                ", id_tienda=" + id_tienda +
                 ", stock=" + stock +
-                ", objTienda=" + objTienda +
+                ", tienda=" + objTienda.getNombre()+ ", " +objTienda.getUbicacion() +
                 '}';
     }
 }

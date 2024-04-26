@@ -6,6 +6,7 @@ import database.ConfigDB;
 import javax.swing.*;
 
 public class Main {
+    
     public static void main(String[] args) {
         ConfigDB.openConnection();
 
@@ -17,12 +18,11 @@ public class Main {
 
         do {
             option = JOptionPane.showInputDialog("""
-                        ------ 👨🏻‍✈️ D'MODA OUTLET 👩🏻‍✈️ ------ \n
+                        ------ 🛒👕 D'MODA OUTLET 🛒👕 ------ \n
                         1. 🛒 Admin Purchases
-                        2. 🧴 Admin Products
-                        3. 👩🏻 Admin Clients
-                        4. 🔎 Search
-                        5. 🚪 Exit
+                        2. 🍉 Admin Products
+                        3. 👩 Admin Clients
+                        4. 🚪 Exit
                         \n
                     """);
 
@@ -41,6 +41,7 @@ public class Main {
                                     5. 🔎 Search purchases by product
                                     6. 👈 Go Back
                                     \n
+                                    
                                 """);
 
                         // Switch Shopping Admin
@@ -69,7 +70,7 @@ public class Main {
                     do {
                         optionB = JOptionPane.showInputDialog("""
                                     ----- PRODUCTS MENU ----- \n
-                                    1. 🧴 List Products
+                                    1. 🍉 List Products
                                     2. ➕ Add Product
                                     3. ✏ Update Product
                                     4. ❌ Delete Product
@@ -104,7 +105,7 @@ public class Main {
                     do {
                         optionC = JOptionPane.showInputDialog("""
                                     ----- CLIENTS MENU ----- \n
-                                    1. 👩🏻 List clients
+                                    1. 👩 List clients
                                     2. ➕ Add client
                                     3. ✏ Update client
                                     4. ❌ Delete client
@@ -135,6 +136,6 @@ public class Main {
                     break;
             }
 
-        } while (!option.equals("5"));
+        } while (!option.equals("4"));
     }
 }

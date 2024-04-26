@@ -268,8 +268,7 @@ public class CompraModel implements CRUD {
 
         //2. Variable booleana para medir el estado de la eliminación
         boolean noStock = false;
-        int stock = 0;
-        int cantidadProducto = qty;
+        int stock;
 
         //3. Abrir la conexión
         Connection objConnection = ConfigDB.openConnection();
@@ -277,9 +276,7 @@ public class CompraModel implements CRUD {
         try {
             //4. Escribir la sentencia SQL
             String sql = """
-                    SELECT * FROM compra
-                    INNER JOIN producto ON compra.id_producto = producto.id_producto
-                    WHERE compra.id_compra = ?;
+                    SELECT * FROM producto WHERE producto.id_producto = ?;
                     """;
 
             //5. Preparamos el statement
@@ -296,7 +293,7 @@ public class CompraModel implements CRUD {
                 stock = objResult.getInt("producto.stock");
 
                 //valido que la cantidad no sea mayor al stock del producto de la compra
-                if (cantidadProducto > stock) {
+                if (qty > stock) {
                     noStock = true;
                     JOptionPane.showMessageDialog(null, "No stock available");
                 }
@@ -312,38 +309,35 @@ public class CompraModel implements CRUD {
         return noStock;
     }
 
-    public boolean updateStock(Object object) {
+    public void updateStock(Object object, Object producto) {
         // 1. Abrir la conexión
         Connection objConnection = ConfigDB.openConnection();
 
         //2. Convertir el objeto
         Compra objCompra = (Compra) object;
-        Producto objProducto = new Producto();
+        Producto objProducto = (Producto) producto;
 
         //3. Variable bandera para saber si se actualizó
         boolean isUpdated = false;
 
         try {
             //4. Creamos la sentencia SQL
-            String sql = "UPDATE producto SET stock = ? \n" +
-                    "INNER JOIN compra ON producto.id_producto = compra.id_producto \n" +
-                    "WHERE compra.id_compra = ? ";
+            String sql = "UPDATE producto SET stock = ? WHERE producto.id_producto = ?";
 
             //5. Preparamos el Statement
             PreparedStatement objPrepare = objConnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
-            int minStock = objCompra.getObjProducto().getStock() - objCompra.getCantidad();
+            int minStock = objProducto.getStock() - objCompra.getCantidad();
 
             //6. Dar Valor a los signos de interrogación (Parámetros de Query)
             objPrepare.setInt(1, minStock);
-            objPrepare.setInt(2, objCompra.getId_compra());
+            objPrepare.setInt(2, objCompra.getId_producto());
 
             //7. Ejecutamos el Query
             int rowAffected = objPrepare.executeUpdate();
 
             if (rowAffected > 0) {
                 isUpdated = true;
-                JOptionPane.showMessageDialog(null, "Product " + objProducto.getNombre() + " was updated successfully");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -351,7 +345,6 @@ public class CompraModel implements CRUD {
 
         //8. Cerrar la conexión
         ConfigDB.closeConnection();
-        return isUpdated;
     }
 
     public List<Object> findPurchasesByProduct(int id) {

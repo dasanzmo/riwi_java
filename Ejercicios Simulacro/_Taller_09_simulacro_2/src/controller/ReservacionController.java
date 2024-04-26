@@ -1,14 +1,12 @@
 package controller;
 
 import entity.Reservacion;
-import entity.Vuelo;
 import model.PasajeroModel;
 import model.ReservacionModel;
 import model.VueloModel;
 
 import javax.swing.*;
 import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 
 public class ReservacionController {
@@ -53,7 +51,6 @@ public class ReservacionController {
         return list;
 
     }
-
 
     // Método para crear reservaciones
     public void create(){
@@ -164,7 +161,5 @@ public class ReservacionController {
             }
         }
     }
-
-
-
+    
 }

@@ -93,13 +93,11 @@ public class Compra {
     public String toString() {
         return "Compra{" +
                 "id_compra=" + id_compra +
-                ", id_cliente=" + id_cliente +
-                ", id_producto=" + id_producto +
                 ", fecha_compra=" + fecha_compra +
+                ", producto=" + objProducto.getNombre() +
                 ", cantidad=" + cantidad +
-                ", objCliente=" + objCliente +
-                ", objProducto=" + objProducto +
-                ", objTienda=" + objTienda +
+                ", cliente=" + objCliente.getNombre() + " " + objCliente.getApellido() +
+                ", tienda=" + objTienda.getNombre() + ", " + objTienda.getUbicacion() +
                 '}';
     }
 }
